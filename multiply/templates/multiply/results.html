@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+    <head>
+        <title>Multiply</title>
+    </head>
+<body>
+<form action="{% url 'results' %}" method="post">
+{% csrf_token %}
+
+    {% for w in winnersYou.0 %}
+ <table>   
+    <tr> 
+        <h1>Winner: {{ w.0 }}</h1>
+    </tr>
+    <tr> 
+        <td><h2>{{ w.1 }} wrong</h2></td><td><h2>{{ w.2 }} seconds</h2></td>
+    </tr>
+</table>    
+    {% endfor %} 
+
+<table>
+    <tr> 
+        <h1>You: </h1>
+    </tr>
+    <tr> 
+        <td><h2>{{ winnersYou.1 }} wrong</h2></td><td><h2>{{ winnersYou.2 }} seconds</h2></td>
+    </tr>
+</table>
+</form> 
+</body>
+</html>

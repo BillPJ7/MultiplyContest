@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Multiply</title>
+    </head>
+<body onload="initPage('{{ status }}')">
+<form action="{% url 'index' %}" method="post">
+{% csrf_token %}
+<script>
+var eq = [[2,2,4],[2,3,6],[2,4,8],[2,5,10]];
+shuffle(eq);
+let eqCnt = -1;
+let dig = 0;
+let tens = 0;
+let wrongs = 0;
+let done = 0;
+let code = "";
+let ms = Date.now();
+let seconds = 0;
+function Calc(i, status){
+    if(status == "None" || status == "Off" || status == 'Wait'){
+        CheckCode(i, status);
+        return;
+    }
+    let t = document.querySelector(".text2");
+    t.style.color = '#000000';
+    if(done == 1){
+        return;
+    }
+    s = guess(i);
+    if(s == "right"){
+        dig = 0;
+        tens = 0;
+        eqNext();
+    }else if(s == "maybe"){
+        let t = document.querySelector(".text2");
+        t.textContent = i;
+    }else if(s == "wrong"){
+        wrongs += 1;
+        let t = document.querySelector(".text2");
+        t.style.color = '#FF0000';
+        t.textContent = eq[eqCnt][2];
+    }
+}
+function initPage(status){
+    let t=document.getElementById("Seconds");
+    t.value = seconds;
+    if(status == 'Wait'){
+        Done()
+    }
+    if(status == "Live"){
+        ms = Date.now();
+        eqNext()
+    }
+}
+function eqNext(){
+    eqCnt += 1;
+    if(eqCnt == 4){
+        seconds = (Date.now() - ms) / 1000;
+        let t=document.getElementById("Wrongs");
+        t.value = wrongs;
+        t=document.getElementById("Seconds");
+        t.value = seconds;
+        var b = document.getElementById("btnSubmit");
+        b.click();
+        //Done();
+    }else{    
+        let s = document.querySelector(".text");
+        let x = Math.floor((Math.random() * 2) + 1);
+        if(x == 1){
+            s.textContent = eq[eqCnt][0] + " X " + eq[eqCnt][1] + " = ";
+        }else{
+            s.textContent = eq[eqCnt][1] + " X " + eq[eqCnt][0] + " = ";
+        }
+        let t = document.querySelector(".text2");
+        t.textContent = "";
+    }
+}
+function CheckCode(i, status){
+    code += String(i);
+    if(code == "610"){
+        if(status == "Off"){
+            let t=document.getElementById("Name");
+            t.value = 'launcher';           
+        }
+        var b = document.getElementById("btnLaunch");
+        b.click();
+    }
+    
+}
+function guess(i){
+    dig += 1;
+    if(dig == 1){
+        let t = document.querySelector(".text2");
+        t.textContent = i;
+        if(i == eq[eqCnt][2]){
+            return "right";
+        }else if(eq[eqCnt][2] < 10){
+            return "wrong";
+        }
+        tens = i;
+        return "maybe";
+    }
+    if(dig == 2){
+        dig = 0;
+        if(tens*10 + i == eq[eqCnt][2]){
+            let t = document.querySelector(".text2");
+            t.textContent = String(tens) + String(i);
+            return "right";
+        }
+        return "wrong";
+    }
+}
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+function Back(){
+    tens = 0;
+    dig = 0;
+    let t = document.querySelector(".text2");
+    t.textContent = "";
+}
+function Done(){
+    document.getElementById("btnResult").style.visibility = "visible";
+    let s = document.querySelector(".text");
+    s.textContent = "Done"
+    s = document.querySelector(".text2");
+    s.textContent = ""
+    done = 1;
+}
+</script>
+    {% if status == "Off" %}
+    <table>
+      
+      <tr> 
+        <td>Name:</td>
+        <td><input type="text" id="Name" name="Name" value="{{ name }}" required></td> 
+        <td><input type="submit" id="btnStart" name="btnStart" value="Start"></td>
+      </tr> 
+    </table> 
+    {% endif %}
+    <table>
+      <tr> 
+        <td><p class="text"></p><p></p></td>
+        <td><p class="text2"></p></td>
+        <td><input type="submit" id="btnResult" name="btnResult" value="Results" style="visibility:hidden"></td>
+      </tr>
+    </table> 
+    <table>
+      <tr>
+        <td><button type="button" onclick="Calc(7,'{{ status }}')" id="btn7" name="btn7" style="height:40px;width:40px">7</button></td>
+        <td><button type="button" onclick="Calc(8,'{{ status }}')" id="btn8" name="btn8" style="height:40px;width:40px">8</button></td>
+        <td><button type="button" onclick="Calc(9,'{{ status }}')" id="btn9" name="btn9" style="height:40px;width:40px">9</button></td>
+      </tr> 
+      <tr>
+        <td><button type="button" onclick="Calc(4,'{{ status }}')" id="btn4" name="btn4" style="height:40px;width:40px">4</button></td>
+        <td><button type="button" onclick="Calc(5,'{{ status }}')" id="btn5" name="btn5" style="height:40px;width:40px">5</button></td>
+        <td><button type="button" onclick="Calc(6,'{{ status }}')" id="btn6" name="btn6" style="height:40px;width:40px">6</button></td>
+      </tr> 
+      <tr>
+        <td><button type="button" onclick="Calc(1,'{{ status }}')" id="btn1" name="btn1" style="height:40px;width:40px">1</button></td>
+        <td><button type="button" onclick="Calc(2,'{{ status }}')" id="btn2" name="btn2" style="height:40px;width:40px">2</button></td>
+        <td><button type="button" onclick="Calc(3,'{{ status }}')" id="btn3" name="btn3" style="height:40px;width:40px">3</button></td>
+      </tr> 
+      <tr>
+        <td></td>
+        <td><button type="button" onclick="Calc(0,'{{ status }}')" id="btn0" name="btn0" style="height:40px;width:40px">0</button></td>
+        <td><button type="button" onclick="Back()" id="btnBack" name="btnBack" style="height:40px;width:40px"><</button></td>
+        
+      </tr> 
+    </table>
+    <input type="submit" name="btnLaunch" id="btnLaunch" style="visibility:hidden">
+    <input type="submit" name="btnSubmit" id="btnSubmit" style="visibility:hidden">
+    <input value={{ PersonID }} name="ID" id="ID" style="visibility:hidden">
+    <input name="Seconds" id="Seconds" style="visibility:hidden">
+    <input name="Wrongs" id="Wrongs" style="visibility:hidden">
+</form> 
+
+</body>
+</html>
