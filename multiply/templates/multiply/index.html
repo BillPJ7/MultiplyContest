@@ -1,13 +1,15 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
     <head>
         <title>Multiply</title>
+        <link rel="stylesheet" href="{% static 'css/multiply.css' %}">
     </head>
-<body onload="initPage('{{ status }}')">
+<body onload="initPage('{{ status }}')" style="min-height: 100vh">
 <form action="{% url 'index' %}" method="post">
 {% csrf_token %}
 <script>
-var eq = [[2,2,4],[2,3,6],[2,4,8],[2,5,10]];
+var eq = [[2,2,4],[2,3,6],[2,4,8],[2,5,10],[2,6,12]];
 shuffle(eq);
 let eqCnt = -1;
 let dig = 0;
@@ -149,7 +151,7 @@ function Done(){
       <tr> 
         <td>Name:</td>
         <td><input type="text" id="Name" name="Name" value="{{ name }}" required></td> 
-        <td><input type="submit" id="btnStart" name="btnStart" value="Start"></td>
+        <td><input type="submit" id="btnStart" name="btnStart" value="Start" style="width:100px"></td>
       </tr> 
     </table> 
     {% endif %}
@@ -162,24 +164,24 @@ function Done(){
     </table> 
     <table>
       <tr>
-        <td><button type="button" onclick="Calc(7,'{{ status }}')" id="btn7" name="btn7" style="height:40px;width:40px">7</button></td>
-        <td><button type="button" onclick="Calc(8,'{{ status }}')" id="btn8" name="btn8" style="height:40px;width:40px">8</button></td>
-        <td><button type="button" onclick="Calc(9,'{{ status }}')" id="btn9" name="btn9" style="height:40px;width:40px">9</button></td>
+        <td><button type="button" onclick="Calc(7,'{{ status }}')" id="btn7" name="btn7">7</button></td>
+        <td><button type="button" onclick="Calc(8,'{{ status }}')" id="btn8" name="btn8">8</button></td>
+        <td><button type="button" onclick="Calc(9,'{{ status }}')" id="btn9" name="btn9">9</button></td>
       </tr> 
       <tr>
-        <td><button type="button" onclick="Calc(4,'{{ status }}')" id="btn4" name="btn4" style="height:40px;width:40px">4</button></td>
-        <td><button type="button" onclick="Calc(5,'{{ status }}')" id="btn5" name="btn5" style="height:40px;width:40px">5</button></td>
-        <td><button type="button" onclick="Calc(6,'{{ status }}')" id="btn6" name="btn6" style="height:40px;width:40px">6</button></td>
+        <td><button type="button" onclick="Calc(4,'{{ status }}')" id="btn4" name="btn4">4</button></td>
+        <td><button type="button" onclick="Calc(5,'{{ status }}')" id="btn5" name="btn5">5</button></td>
+        <td><button type="button" onclick="Calc(6,'{{ status }}')" id="btn6" name="btn6">6</button></td>
       </tr> 
       <tr>
-        <td><button type="button" onclick="Calc(1,'{{ status }}')" id="btn1" name="btn1" style="height:40px;width:40px">1</button></td>
-        <td><button type="button" onclick="Calc(2,'{{ status }}')" id="btn2" name="btn2" style="height:40px;width:40px">2</button></td>
-        <td><button type="button" onclick="Calc(3,'{{ status }}')" id="btn3" name="btn3" style="height:40px;width:40px">3</button></td>
+        <td><button type="button" onclick="Calc(1,'{{ status }}')" id="btn1" name="btn1">1</button></td>
+        <td><button type="button" onclick="Calc(2,'{{ status }}')" id="btn2" name="btn2">2</button></td>
+        <td><button type="button" onclick="Calc(3,'{{ status }}')" id="btn3" name="btn3">3</button></td>
       </tr> 
       <tr>
         <td></td>
-        <td><button type="button" onclick="Calc(0,'{{ status }}')" id="btn0" name="btn0" style="height:40px;width:40px">0</button></td>
-        <td><button type="button" onclick="Back()" id="btnBack" name="btnBack" style="height:40px;width:40px"><</button></td>
+        <td><button type="button" onclick="Calc(0,'{{ status }}')" id="btn0" name="btn0">0</button></td>
+        <td><button type="button" onclick="Back()" id="btnBack" name="btnBack"><</button></td>
         
       </tr> 
     </table>
